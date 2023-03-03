@@ -1,0 +1,17 @@
+.hidden {
+    display: none;
+}
+
+#currentWeather {
+    padding: 10px;
+    margin-bottom: 5px;
+}
+
+#weatherForecast {
+    padding: 10px;
+}
+
+h1 {
+    display: flex;
+    flex-direction: row;
+}

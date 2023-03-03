@@ -42,16 +42,18 @@ function getWeather(cityName) {
             currentWeatherContainer.append(iconEl)
 
             let temperatureEl = document.createElement('p')
-            temperatureEl.textContent = ("Temp: " + data.main.temp)
+            temperatureEl.textContent = ("Temp: " + data.main.temp + " F")
             currentWeatherContainer.append(temperatureEl)
 
             let humidityEl = document.createElement('p')
-            humidityEl.textContent = ("Humidity: " + data.main.humidity)
+            humidityEl.textContent = ("Humidity: " + data.main.humidity +"%")
             currentWeatherContainer.append(humidityEl)
 
             let windspeedEl = document.createElement('p')
-            windspeedEl.textContent = ("Wind Speed: " + data.wind.speed)
+            windspeedEl.textContent = ("Wind Speed: " + data.wind.speed + " MPH")
             currentWeatherContainer.append(windspeedEl)
+
+            currentWeatherContainer.classList.remove('hidden')
 
         });
 }
@@ -66,9 +68,9 @@ function getForecast(cityName) {
             console.log(data)
 
             weatherForecastContainer.innerHTML = '';
-            for (let i = 0; i < 5; i++) {
-                let dateEl = document.createElement('h1')
-                dateEl.textContent = dayjs().format('MMM D, YYYY')
+            for (let i = 1; i < 6; i++) {
+                let dateEl = document.createElement('h5')
+                dateEl.textContent = dayjs().add(i, 'day').format('MMM D, YYYY')
                 weatherForecastContainer.append(dateEl)
 
                 let iconCode = data.list[i].weather[0].icon
@@ -80,20 +82,19 @@ function getForecast(cityName) {
                 weatherForecastContainer.append(iconEl)
 
                 let temperatureEl = document.createElement('p')
-                temperatureEl.textContent = ("Temp: " + data.list[i].main.temp)
+                temperatureEl.textContent = ("Temp: " + data.list[i].main.temp + " F")
                 weatherForecastContainer.append(temperatureEl)
 
                 let humidityEl = document.createElement('p')
-                humidityEl.textContent = ("Humidity: " + data.list[i].main.humidity)
+                humidityEl.textContent = ("Humidity: " + data.list[i].main.humidity + "%")
                 weatherForecastContainer.append(humidityEl)
 
                 let windspeedEl = document.createElement('p')
-                windspeedEl.textContent = ("Wind Speed: " + data.list[i].wind.speed)
+                windspeedEl.textContent = ("Wind Speed: " + data.list[i].wind.speed + " MPH")
                 weatherForecastContainer.append(windspeedEl)
 
+                weatherForecastContainer.classList.remove('hidden')
             }
-
-
         });
 }
 
