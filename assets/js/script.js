@@ -33,14 +33,13 @@ function getWeather(cityName) {
             dateEl.textContent = dayjs().format('MMM D, YYYY')
             currentWeatherContainer.append(dateEl)
 
-
-            let iconCode = data.weather.icon
-            let iconurl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+            let iconCode = data.weather[0].icon
+            let iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
             let iconEl = document.createElement('div')
-            
+            let img = document.createElement('img')
+            img.setAttribute('src', iconUrl)
+            iconEl.appendChild(img)
             currentWeatherContainer.append(iconEl)
-
-
 
             let temperatureEl = document.createElement('p')
             temperatureEl.textContent = ("Temp: " + data.main.temp)
@@ -50,7 +49,7 @@ function getWeather(cityName) {
             humidityEl.textContent = ("Humidity: " + data.main.humidity)
             currentWeatherContainer.append(humidityEl)
 
-            windspeedEl = document.createElement ('p')
+            let windspeedEl = document.createElement('p')
             windspeedEl.textContent = ("Wind Speed: " + data.wind.speed)
             currentWeatherContainer.append(windspeedEl)
 
@@ -65,6 +64,34 @@ function getForecast(cityName) {
             return response.json()
         }).then(function (data) {
             console.log(data)
+
+            weatherForecastContainer.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                let dateEl = document.createElement('h1')
+                dateEl.textContent = dayjs().format('MMM D, YYYY')
+                weatherForecastContainer.append(dateEl)
+
+                let iconCode = data.list[i].weather[0].icon
+                let iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+                let iconEl = document.createElement('div')
+                let img = document.createElement('img')
+                img.setAttribute('src', iconUrl)
+                iconEl.appendChild(img)
+                weatherForecastContainer.append(iconEl)
+
+                let temperatureEl = document.createElement('p')
+                temperatureEl.textContent = ("Temp: " + data.list[i].main.temp)
+                weatherForecastContainer.append(temperatureEl)
+
+                let humidityEl = document.createElement('p')
+                humidityEl.textContent = ("Humidity: " + data.list[i].main.humidity)
+                weatherForecastContainer.append(humidityEl)
+
+                let windspeedEl = document.createElement('p')
+                windspeedEl.textContent = ("Wind Speed: " + data.list[i].wind.speed)
+                weatherForecastContainer.append(windspeedEl)
+
+            }
 
 
         });
