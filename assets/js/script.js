@@ -2,6 +2,8 @@ let citySearchbtn = document.querySelector('#citySearch')
 let weatherCity = document.querySelector('#weatherCity')
 let currentWeatherContainer = document.querySelector('#currentWeather')
 let weatherForecastContainer = document.querySelector('#weatherForecast')
+let searchHistoryContainer = document.querySelector('#searchHistory')
+
 
 function start(event) {
     event.preventDefault()
@@ -9,6 +11,18 @@ function start(event) {
     let city = weatherCity.value
     getWeather(city)
     getForecast(city)
+    let storedCities = JSON.parse(localStorage.getItem("cities"))
+    if (storedCities && storedCities.length > 0)
+    {
+        console.log(storedCities)
+        storedCities.push(city)
+        localStorage.setItem("cities", JSON.stringify(storedCities));
+    }
+    else {
+        localStorage.setItem("cities", JSON.stringify([city]))
+    }
+    saveHistory(city)
+
 }
 
 function getWeather(cityName) {
@@ -46,7 +60,7 @@ function getWeather(cityName) {
             currentWeatherContainer.append(temperatureEl)
 
             let humidityEl = document.createElement('p')
-            humidityEl.textContent = ("Humidity: " + data.main.humidity +"%")
+            humidityEl.textContent = ("Humidity: " + data.main.humidity + "%")
             currentWeatherContainer.append(humidityEl)
 
             let windspeedEl = document.createElement('p')
@@ -98,5 +112,22 @@ function getForecast(cityName) {
         });
 }
 
+function saveHistory(city) {
+    let historyButtonEl = document.createElement('button')
+    historyButtonEl.textContent = city;
+    searchHistoryContainer.append(historyButtonEl)
+    historyButtonEl.classList.add('btn-secondary')
+    historyButtonEl.classList.add('m-1')
+
+}
+
+function getHistory(event) {
+    console.log(event.target.innerHTML)
+    event.preventDefault()
+    getWeather(event.target.innerHTML)
+    getForecast(event.target.innerHTML)
+}
+
 
 citySearchbtn.addEventListener('submit', start)
+searchHistoryContainer.addEventListener('click', getHistory)
