@@ -3,7 +3,20 @@ let weatherCity = document.querySelector('#weatherCity')
 let currentWeatherContainer = document.querySelector('#currentWeather')
 let weatherForecastContainer = document.querySelector('#weatherForecast')
 let searchHistoryContainer = document.querySelector('#searchHistory')
-
+let dayContainer0
+let dayContainer1 = document.querySelector('#day1')
+let dayContainer2 = document.querySelector('#day2')
+let dayContainer3 = document.querySelector('#day3')
+let dayContainer4 = document.querySelector('#day4')
+let dayContainer5 = document.querySelector('#day5')
+let dayContainersArray = [
+    dayContainer0,
+    dayContainer1,
+    dayContainer2,
+    dayContainer3,
+    dayContainer4,
+    dayContainer5
+]
 
 function start(event) {
     event.preventDefault()
@@ -12,8 +25,7 @@ function start(event) {
     getWeather(city)
     getForecast(city)
     let storedCities = JSON.parse(localStorage.getItem("cities"))
-    if (storedCities && storedCities.length > 0)
-    {
+    if (storedCities && storedCities.length > 0) {
         console.log(storedCities)
         storedCities.push(city)
         localStorage.setItem("cities", JSON.stringify(storedCities));
@@ -75,17 +87,25 @@ function getWeather(cityName) {
 function getForecast(cityName) {
     var apiUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=' + cityName + '&units=imperial&appid=b26ef5e661df23ce4ce2891ab8eebc4d'
 
+
     fetch(apiUrl)
         .then(function (response) {
             return response.json()
         }).then(function (data) {
             console.log(data)
 
-            weatherForecastContainer.innerHTML = '';
+            dayContainer1.innerHTML = '';
+            dayContainer2.innerHTML = '';
+            dayContainer3.innerHTML = '';
+            dayContainer4.innerHTML = '';
+            dayContainer5.innerHTML = '';
+
             for (let i = 1; i < 6; i++) {
                 let dateEl = document.createElement('h5')
                 dateEl.textContent = dayjs().add(i, 'day').format('MMM D, YYYY')
-                weatherForecastContainer.append(dateEl)
+                let currentContainer = dayContainersArray[i]
+                currentContainer.append(dateEl)
+
 
                 let iconCode = data.list[i].weather[0].icon
                 let iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
@@ -93,20 +113,20 @@ function getForecast(cityName) {
                 let img = document.createElement('img')
                 img.setAttribute('src', iconUrl)
                 iconEl.appendChild(img)
-                weatherForecastContainer.append(iconEl)
+                currentContainer.append(iconEl)
 
                 let temperatureEl = document.createElement('p')
                 temperatureEl.textContent = ("Temp: " + data.list[i].main.temp + " F")
-                weatherForecastContainer.append(temperatureEl)
+                currentContainer.append(temperatureEl)
 
                 let humidityEl = document.createElement('p')
                 humidityEl.textContent = ("Humidity: " + data.list[i].main.humidity + "%")
-                weatherForecastContainer.append(humidityEl)
+                currentContainer.append(humidityEl)
 
                 let windspeedEl = document.createElement('p')
                 windspeedEl.textContent = ("Wind Speed: " + data.list[i].wind.speed + " MPH")
-                weatherForecastContainer.append(windspeedEl)
-
+                currentContainer.append(windspeedEl)
+                console.log(currentContainer)
                 weatherForecastContainer.classList.remove('hidden')
             }
         });
